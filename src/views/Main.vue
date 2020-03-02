@@ -46,7 +46,7 @@ export default {
   data: function() {
     return ({
       pokemons: {},
-      cardsOnPage: 20,
+      cardsOnPage: 5,
       currentPage: 1,
       paginationButtonsCount: 5
     })

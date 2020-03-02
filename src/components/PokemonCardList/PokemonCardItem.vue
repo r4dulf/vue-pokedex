@@ -44,8 +44,8 @@
     <div class="stats">
       <pokemon-stats
         :maxValue="255"
-        type="progress"
         :stats="pokemonStats"
+        type="progress"
       />
     </div>
   </div>

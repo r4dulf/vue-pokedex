@@ -1,6 +1,5 @@
 <template>
   <div class="stats">
-
     <div class="switch" v-if="!type">
       <div
         class="toggle"
@@ -8,6 +7,7 @@
         :key="value"
         :data-type="value"
         @click="switchType(value)"
+        :class="displayType === value? 'active': ''"
       >
         {{ value.toUpperCase() }}
       </div>
@@ -19,7 +19,11 @@
       </canvas>
     </div>
 
-    <div class="progress" v-if="displayType === 'progress'">
+    <div
+      class="progress"
+      v-if="displayType === 'progress'"
+      :class="fullWidth? 'full-width': ''"
+    >
       <div class="stat-item" v-for="key in Object.keys(stats)" :key="key">
         <div class="stat-info">
           <router-link class="stat-name" :to="`/stat/${key}`">
@@ -50,7 +54,6 @@ export default {
       radius: radius,
       padding: padding,
       radiusWithPadding: radius + padding,
-      count: Object.keys(this.stats).length,
       fontSize: 14,
       displayType: this.type || 'progress'
     }
@@ -59,7 +62,9 @@ export default {
   props: {
     stats: Object,
     maxValue: Number,
-    type: String // 'diagramm' || 'progress'
+    type: String, // 'diagramm' || 'progress',
+    fullWidth: Boolean,
+    count: Number
   },
 
   components: {
@@ -201,18 +206,46 @@ export default {
 </script>
 
 <style scoped lang="sass">
-  canvas, .progress 
-    width: 380px
-    height: 380px
+  .stats
     display: flex
     flex-direction: column
     justify-content: center
     align-items: center
 
-    & > *
-      width: 100%
+    canvas, .full-width
+      width: 380px
+      height: 380px
+      display: flex
+      justify-content: center
+      align-items: center
+
+  .switch
+    display: flex
+    justify-content: center
+
+    .toggle
+      padding: 10px
+      background-color: white
+      border: 1px solid black
+      cursor: pointer
+
+      &.active
+        cursor: default
+        background-color: grey
+        color: white
+        border: 1px solid transparent
+
 
   .progress
+    width: 100%
+
+    &.full-width
+      display: flex
+      flex-direction: column
+
+      & > *
+        width: 100%
+
     .stat-info
       display: flex
       justify-content: space-between  
