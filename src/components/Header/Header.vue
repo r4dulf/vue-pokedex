@@ -42,4 +42,8 @@
     a
       text-decoration: none
       color: white
+
+@media screen and (max-width: 640px)
+  header
+    justify-content: center !important
 </style>

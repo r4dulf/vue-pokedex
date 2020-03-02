@@ -1,8 +1,24 @@
 <template>
   <div id="app">
+    <Header/>
     <router-view/>
   </div>
 </template>
+
+<script>
+import Vue from 'vue'
+import Header from './components/Header/Header.vue'
+import vueHeadful from 'vue-headful'
+
+Vue.component('vue-headful', vueHeadful)
+
+export default {
+  name: 'App',
+  components: {
+    Header
+  }
+}
+</script>
 
 <style lang="sass">
 
