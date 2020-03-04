@@ -62,9 +62,8 @@ export default {
   props: {
     stats: Object,
     maxValue: Number,
-    type: String, // 'diagramm' || 'progress',
-    fullWidth: Boolean,
-    count: Number
+    type: String, // 'diagramm' || 'progress' || null,
+    fullWidth: Boolean
   },
 
   components: {
@@ -129,58 +128,44 @@ export default {
     drawGrid(ctx) {
       ctx.beginPath()
 
-      for(let i = 0; i < this.count; i++) {
-        ctx.save()
-
+      Object.keys(this.stats).forEach((val, ind, arr) => {
         ctx.moveTo(this.radiusWithPadding, this.radiusWithPadding)
 
-        ctx.translate(this.radiusWithPadding, this.radiusWithPadding)
-        ctx.rotate(this.degToRad(360 / this.count * i))
-        ctx.translate(-this.radiusWithPadding, -this.radiusWithPadding)
+        this.rotateCanvas(ctx, 360 / arr.length)
 
         ctx.lineTo(this.radiusWithPadding, this.padding + ctx.lineWidth)
-
-        ctx.restore()
-      }
+      })
 
       ctx.stroke()
       ctx.closePath()
     },
 
     drawStats(ctx, scale = 1) {
-      const values = Object.values(this.stats)
-
       ctx.beginPath()
 
-      for(let i = 0; i < this.count; i++) {
+      Object.values(this.stats).forEach((val, ind, arr) => {
         ctx.save()
 
         ctx.moveTo(this.radiusWithPadding, this.radiusWithPadding)
 
-        ctx.translate(this.radiusWithPadding, this.radiusWithPadding)
-        ctx.rotate(this.degToRad(360 / this.count * i))
-        ctx.translate(-this.radiusWithPadding, -this.radiusWithPadding)
+        this.rotateCanvas(ctx, 360 / arr.length * ind)
 
-        ctx.lineTo(this.radiusWithPadding, this.radiusWithPadding + ctx.lineWidth - this.radius * values[i] / this.maxValue * scale)
+        ctx.lineTo(this.radiusWithPadding, this.radiusWithPadding + ctx.lineWidth - this.radius * val / this.maxValue * scale)
 
         ctx.restore()
-      }
+      })
 
-      for(let i = 0; i < this.count; i++) {
+      Object.values(this.stats).forEach((val, ind, arr) => {
         ctx.save()
 
-        ctx.translate(this.radiusWithPadding, this.radiusWithPadding)
-        ctx.rotate(this.degToRad(360 / this.count * i))
-        ctx.translate(-this.radiusWithPadding, -this.radiusWithPadding)
+        this.rotateCanvas(ctx, 360 / arr.length * ind)
 
-        ctx.lineTo(this.radiusWithPadding, this.radiusWithPadding + ctx.lineWidth - this.radius * values[i] / this.maxValue * scale)
+        ctx.lineTo(this.radiusWithPadding, this.radiusWithPadding + ctx.lineWidth - this.radius * val / this.maxValue * scale)
 
-        ctx.translate(this.radiusWithPadding, this.radiusWithPadding)
-        ctx.rotate(this.degToRad(-360 / this.count * (i + 1)))
-        ctx.translate(-this.radiusWithPadding, -this.radiusWithPadding)
+        this.rotateCanvas(ctx, -360 / arr.length * ind)
         
         ctx.restore()
-      }
+      })
 
       ctx.fill()
       ctx.stroke()
@@ -188,18 +173,22 @@ export default {
     },
 
     drawText(ctx) {
-      for(let i = 0; i < this.count; i++) {
-        ctx.save()
+      ctx.save()
 
-        ctx.translate(this.radiusWithPadding, this.radiusWithPadding)
-        ctx.rotate(this.degToRad(360 / this.count * i))
-        ctx.translate(-this.radiusWithPadding, -this.radiusWithPadding)
+      Object.keys(this.stats).forEach((key, ind, arr) => {
+        ctx.fillText(key.toUpperCase(), this.radiusWithPadding, this.padding / 2)
+        ctx.fillText(this.stats[key], this.radiusWithPadding, this.padding)
+        
+        this.rotateCanvas(ctx, 360 / arr.length)
+      })
 
-        ctx.fillText(Object.keys(this.stats)[i].toUpperCase(), this.radiusWithPadding, this.padding / 2)
-        ctx.fillText(`${Object.values(this.stats)[i]}`, this.radiusWithPadding, this.padding)
+      ctx.restore()
+    },
 
-        ctx.restore()
-      }
+    rotateCanvas(ctx, angle) {
+      ctx.translate(this.radiusWithPadding, this.radiusWithPadding)
+      ctx.rotate(this.degToRad(angle))
+      ctx.translate(-this.radiusWithPadding, -this.radiusWithPadding)
     }
   }
 }
@@ -222,6 +211,7 @@ export default {
   .switch
     display: flex
     justify-content: center
+    margin: 5px
 
     .toggle
       padding: 10px

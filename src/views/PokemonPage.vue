@@ -12,7 +12,6 @@
           :stats="pokemonStats"
           :maxValue="255"
           :fullWidth="true"
-          :count="Object.keys(pokemonStats).length"
         />
       </div>
     </div>
@@ -74,7 +73,7 @@ export default {
       text-transform: uppercase
 
     .pokemon-name::first-letter
-      text-transform: uppercases
+      text-transform: uppercase
 
     .pokemon-content
       display: flex

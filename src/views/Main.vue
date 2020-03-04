@@ -75,7 +75,6 @@ export default {
   methods: {
     navigate(pageNum) {
       this.currentPage = pageNum
-      this.$router.push('?page=' + this.currentPage)
       this.updateData()
     },
 

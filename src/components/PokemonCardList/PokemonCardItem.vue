@@ -172,6 +172,8 @@ export default {
       img
         max-width: 96px
         max-height: 96px
+        min-width: 96px
+        min-height: 96px
 
   .types-container
     display: flex
