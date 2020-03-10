@@ -21,15 +21,13 @@
       </div>
 
       <div class="pokemon-info">
-        <div class="first-column">
 
+        <div class="first-column">
           <div class="sprites">
             <h2 class="sprites-title">
               Sprites
             </h2>
-            <sprites-container
-              :sprites="pokemon.sprites"
-              class="wrap-elements"
+            <sprites-container :sprites="pokemon.sprites" class="wrap-elements"
             />
           </div>
 
@@ -37,42 +35,10 @@
             <div class="types-title">
               <h2>Types</h2>
               <div class="types-container">
-                <pokemon-type
-                  v-for="{ type } in pokemon.types"
-                  :key="type.name"
-                  :type="type"
-                />
+                <pokemon-type v-for="{ type } in pokemon.types" :key="type.name" :type="type" />
               </div>
             </div>
           </div>
-
-          <div class="damage-info">
-            <div class="damage-info-title">
-              <h2>Damage info</h2>
-              <div class="damage-info-container">
-                <table>
-                  <tr
-                    v-for="key in Object.keys(damageInfo)"
-                    :key="key"
-                  >
-                    <td>
-                      {{ key.replace(/_/g, ' ') }}
-                    </td>
-                    <td>
-                      <pokemon-type
-                        v-for="type in damageInfo[key]"
-                        :key="type.name"
-                        :type="type"
-                      />
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-
-        </div>
-        <div class="second-column">
 
           <div class="characteristics">
             <div class="characteristics-title">
@@ -81,10 +47,7 @@
               </h2>
             </div>
             <table>
-              <tr
-                v-for="key in Object.keys(getCharacteristics)"
-                :key="key"
-              >
+              <tr v-for="key in Object.keys(getCharacteristics)" :key="key" >
                 <td>
                   {{ key.replace(/_/g, ' ') }}
                 </td>
@@ -95,6 +58,27 @@
             </table>
           </div>
 
+          <div class="damage-info">
+            <div class="damage-info-title">
+              <h2>Damage info</h2>
+              <div class="damage-info-container">
+                <table>
+                  <tr v-for="key in Object.keys(damageInfo)" :key="key" >
+                    <td>
+                      {{ key.replace(/_/g, ' ') }}
+                    </td>
+                    <td>
+                      <pokemon-type v-for="type in damageInfo[key]" :key="type.name" :type="type" />
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="second-column">
+
           <div class="stats">
             <div class="stats-title">
               <h2>
@@ -102,14 +86,9 @@
               </h2>
             </div>
             <div class="stats-container">
-              <pokemon-stats
-                :stats="pokemonStats"
-                :maxValue="255"
-                :fullWidth="true"
-              />
+              <pokemon-stats :stats="pokemonStats" :maxValue="255" :fullWidth="true" />
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -264,24 +243,43 @@ export default {
           justify-content: flex-end
 
       .characteristics
-
         table
           width: 100%
           border: 1px solid black
-          padding: 0
           border-collapse: collapse
 
           tr
-            display: grid
-            grid-template-columns: 1fr 1fr
-
             td
+              width: 50%
               border: 1px solid black
               padding: 10px
 
               &:last-child
                 text-align: end
 
-              &:first-letter
-                text-transform: uppercase
+              text-transform: uppercase
+
+      .damage-info
+        .damage-info-container
+          table
+            border-collapse: collapse
+            border: 1px solid black
+            tr
+              td
+                width: 50%
+                border: 1px solid black
+                padding: 5px
+
+                &:first-child
+                  text-transform: uppercase
+                  white-space: nowrap
+                &:last-child
+                  text-align: center
+                  & > *
+                    display: inline-block
+                    margin: 3px
+  @media screen and (max-width: 954px)
+    #content
+      .pokemon-info
+        grid-template-columns: 1fr
 </style>

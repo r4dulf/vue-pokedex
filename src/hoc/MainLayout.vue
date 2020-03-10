@@ -1,7 +1,9 @@
 <template>
   <div id="main">
     <Header/>
-    <slot/>
+    <div id="main-container">
+      <slot/>
+    </div>
   </div> 
 </template>
 
@@ -17,5 +19,8 @@ export default {
 </script>
 
 <style scoped lang="sass">
-
+  #main-container
+    display: flex
+    justify-content: center
+    overflow: hidden
 </style>

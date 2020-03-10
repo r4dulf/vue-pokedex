@@ -10,9 +10,6 @@
         <span class="toggle-favorite menu-button" title="Add to/Remove from favorites">
           <font-awesome-icon :icon="['far', 'star']"/>
         </span>
-        <span class="toggle-gender menu-button" title="Change gender" @click="selectedGender = !selectedGender">
-          <font-awesome-icon :icon="['fa', 'venus-mars']"/>
-        </span>
         <router-link :to="`pokemon/${pokemon.id}`" class="menu-button" title="More info">
           <font-awesome-icon :icon="['fa', 'info']"/>
         </router-link>
@@ -58,8 +55,7 @@ export default {
   props: ['initData'],
 
   data:() => ({
-    pokemon: { },
-    selectedGender: true
+    pokemon: { }
   }),
 
   components: {
