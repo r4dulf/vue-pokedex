@@ -2,19 +2,23 @@
   <div class="stats">
     <div class="switch" v-if="!type">
       <div
-        class="toggle"
-        v-for="value in ['progress', 'diagramm']"
-        :key="value"
-        :data-type="value"
-        @click="switchType(value)"
-        :class="displayType === value? 'active': ''"
+        class="toggle-tab"
+        @click="switchType('progress')"
+        :class="displayType === 'progress'? 'active': ''"
       >
-        {{ value.toUpperCase() }}
+        <font-awesome-icon :icon="['fas', 'align-left']" size="2x"/>
+      </div>
+      <div
+        class="toggle-tab"
+        @click="switchType('diagramm')"
+        :class="displayType === 'diagramm'? 'active': ''"
+      >
+        <font-awesome-icon :icon="['fas', 'chart-pie']" size="2x"/>
       </div>
     </div>
 
     <div class="diagramm" v-if="displayType === 'diagramm'">
-      <canvas ref="diagramm" :height="radius * 2 + padding * 2" :width="radius * 2 + padding * 2">
+      <canvas ref="diagramm" :height="radiusWithPadding * 2" :width="radiusWithPadding * 2">
         Oops! Your browser doesn't support the HTML5 CANVAS tag.
       </canvas>
     </div>
@@ -22,7 +26,6 @@
     <div
       class="progress"
       v-if="displayType === 'progress'"
-      :class="fullWidth? 'full-width': ''"
     >
       <div class="stat-item" v-for="key in Object.keys(stats)" :key="key">
         <div class="stat-info">
@@ -42,8 +45,12 @@
 
 <script>
 import ProgressBar from '@/components/ProgressBar/ProgressBar.vue'
+import { faAlignLeft, faChartPie } from '@fortawesome/free-solid-svg-icons'
+import { library } from '@fortawesome/fontawesome-svg-core'
 
-const radius = 150
+library.add(faAlignLeft, faChartPie)
+
+const radius = 156
 const padding = 40
 
 export default {
@@ -62,8 +69,7 @@ export default {
   props: {
     stats: Object,
     maxValue: Number,
-    type: String, // 'diagramm' || 'progress' || null,
-    fullWidth: Boolean
+    type: String, // 'diagramm' || 'progress' || null
   },
 
   components: {
@@ -178,7 +184,7 @@ export default {
       Object.keys(this.stats).forEach((key, ind, arr) => {
         ctx.fillText(key.toUpperCase(), this.radiusWithPadding, this.padding / 2)
         ctx.fillText(this.stats[key], this.radiusWithPadding, this.padding)
-        
+
         this.rotateCanvas(ctx, 360 / arr.length)
       })
 
@@ -197,44 +203,35 @@ export default {
 <style scoped lang="sass">
   .stats
     display: flex
-    flex-direction: column
-    justify-content: center
-    align-items: center
 
-    canvas, .full-width
-      width: 380px
-      height: 380px
-      display: flex
-      justify-content: center
-      align-items: center
+    & > *:nth-child(2)
+      padding: 5px
+      border: 1px solid black
+      min-width: 392px
+      min-height: 392px
 
   .switch
-    display: flex
-    justify-content: center
-    margin: 5px
+    position: relative
+    left: 1px
+    margin-right: 0
+    padding-top: 45px
 
-    .toggle
-      padding: 10px
-      background-color: white
-      border: 1px solid black
+    .toggle-tab
+      text-align: center
+      padding: 5px
+      cursor: default
+      background-color: #ddd
+      border: 1px solid transparent
+      border-right-color: black
       cursor: pointer
 
       &.active
-        cursor: default
-        background-color: grey
-        color: white
-        border: 1px solid transparent
-
+        background-color: white
+        border: 1px solid black
+        border-right: 1px solid transparent
 
   .progress
     width: 100%
-
-    &.full-width
-      display: flex
-      flex-direction: column
-
-      & > *
-        width: 100%
 
     .stat-info
       display: flex
@@ -242,6 +239,6 @@ export default {
       font-size: 15px
       text-transform: uppercase
       font-weight: bold
-      margin: 5px 0px
+      margin: 9px 0px
     
 </style>

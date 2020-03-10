@@ -1,37 +1,40 @@
 <template>
-  <div id="content">
-    <vue-headful title="Pokedex" />
-    <div class="features">
-      <div class="cards-on-page">
-        <span class="label">Cards count:</span>
-        <select
-          type="text"
-          v-model="cardsOnPage"
-          @change="updateData"
-        >
-          <option
-            v-for="value in [5, 10, 20, 50]"
-            :key="value"
-            :value="value"
+  <main-layout>
+    <div id="pokemons-cards">
+      <vue-headful title="Pokedex" />
+      <div class="features">
+        <div class="cards-on-page">
+          <span class="label">Cards count:</span>
+          <select
+            type="text"
+            v-model="cardsOnPage"
+            @change="updateData"
           >
-            {{ value }}
-          </option>
-        </select>
+            <option
+              v-for="value in [5, 10, 20, 50]"
+              :key="value"
+              :value="value"
+            >
+              {{ value }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <pokemon-card-list :list="pokemons.results"/>
+      <div class="pagination-container">
+        <pagination
+          @navigate="navigate"
+          :buttonList="paginationButtonList" 
+          :lastPage="lastPage"
+          :currentPage="currentPage"
+        />
       </div>
     </div>
-    <pokemon-card-list :list="pokemons.results"/>
-    <div class="pagination-container">
-      <pagination
-        @navigate="navigate"
-        :buttonList="paginationButtonList" 
-        :lastPage="lastPage"
-        :currentPage="currentPage"
-      />
-    </div>
-  </div>
+  </main-layout>
 </template>
 
 <script>
+import MainLayout from '@/hoc/MainLayout.vue'
 import PokemonCardList from '@/components/PokemonCardList/PokemonCardList.vue'
 import Pagination from '@/components/Pagination/Pagination.vue'
 import { getData } from '@/helpers/api'
@@ -40,7 +43,8 @@ export default {
   name: 'Main',
   components: {
     Pagination,
-    PokemonCardList
+    PokemonCardList,
+    MainLayout
   },
   
   data: function() {
@@ -97,7 +101,7 @@ export default {
 </script>
 
 <style scoped lang="sass">
-div#content
+div#pokemons-cards
   padding: 10px 0px
 
   .features

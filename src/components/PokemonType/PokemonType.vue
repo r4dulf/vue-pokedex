@@ -23,7 +23,7 @@ export default {
     margin: 0px 5px 0px 0px
     padding: 5px 15px
     text-align: center
-    min-width: 96px
+    min-width: 120px
     border: 3px solid #333
     border-radius: 20px
     text-transform: uppercase

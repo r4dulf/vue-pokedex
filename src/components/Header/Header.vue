@@ -34,10 +34,12 @@
         text-align: center
         padding: 0
         margin: 0
+        font-size: 25px
+        font-weight: bold
 
       img.logo-img
-        height: 50px
-        width: 50px
+        height: 60px
+        width: 60px
 
     a
       text-decoration: none
