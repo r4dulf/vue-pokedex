@@ -1,5 +1,5 @@
 <template>
-  <ul>
+  <ul v-show="isLoaded">
     <li v-for="move in movesInfo" :key="move.name">
       <pokemon-move :move="move" />
     </li>
@@ -16,7 +16,8 @@ export default {
   },
 
   data: () => ({
-    movesInfo: []
+    movesInfo: [],
+    isLoaded: false
   }),
 
   props: {
@@ -25,16 +26,25 @@ export default {
 
   methods: {
     async getMovesInfo() {
+      this.isLoaded = false
+
       const values = await Promise.all((this.moves || []).map(
         async item => (await (await fetch(item.move.url)).json())
       ))
 
-      return values
+      this.movesInfo = values
+      this.isLoaded = true
     },
   },
 
-  async mounted() {
-    this.movesInfo = await this.getMovesInfo()
+  mounted() {
+    this.getMovesInfo()
+  },
+
+  watch: {
+    moves() {
+      this.getMovesInfo()
+    }
   }
 }
 </script>

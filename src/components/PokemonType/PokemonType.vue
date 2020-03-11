@@ -75,7 +75,7 @@ export default {
     background-color: #e0C068
 
   .normal
-    background-color: #e0C068
+    background-color: #9c9c63
 
   .electric
     background-color: #f8d030

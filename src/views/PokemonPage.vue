@@ -1,7 +1,7 @@
 <template>
   <main-layout>
     <div id="content" v-if="isLoaded">
-      <vue-headful :title="getTitle" />
+      <vue-headful :title="title" />
 
       <div class="pokemon-header">
         <div class="pokemon-title">
@@ -43,12 +43,12 @@
               <h2>Characteristics</h2>
             </div>
             <table>
-              <tr v-for="key in Object.keys(getCharacteristics)" :key="key" >
+              <tr v-for="key in Object.keys(characteristics)" :key="key" >
                 <td>
                   {{ key.replace(/_/g, ' ') }}
                 </td>
                 <td>
-                  {{ getCharacteristics[key] }}
+                  {{ characteristics[key] }}
                 </td>
               </tr>
             </table>
@@ -137,11 +137,11 @@ export default {
       return stats
     },
 
-    getTitle() {
+    title() {
       return this.pokemon.name[0].toUpperCase() + this.pokemon.name.split('').splice(1).join('')
     },
 
-    getCharacteristics() {
+    characteristics() {
       const { height, base_experience, weight } = this.pokemon
 
       return {
@@ -158,7 +158,7 @@ export default {
       this.id = +e.currentTarget.dataset.to
     },
 
-    async getDamageInfo() {
+    async updateDamageInfo() {
       const { types } = this.pokemon
       const values = await Promise.all(types.map(
         async item => (await (await fetch(item.type.url)).json()).damage_relations
@@ -175,7 +175,7 @@ export default {
         return prev
       })
 
-      return damageInfo
+      this.damageInfo = damageInfo
     }
   },
 
@@ -186,7 +186,7 @@ export default {
       this.pokemon = data
       this.isLoaded = true
       this.id = this.pokemon.id
-      this.damageInfo = await this.getDamageInfo()
+      this.updateDamageInfo()
     }
   },
 
@@ -196,7 +196,7 @@ export default {
 
       if (data) {
         this.pokemon = data
-        this.id = this.pokemon.id
+        this.updateDamageInfo()
       }
     }
   }

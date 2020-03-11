@@ -17,16 +17,13 @@
       </div>
     </div>
 
-    <div class="diagramm" v-if="displayType === 'diagramm'">
+    <div class="diagramm" v-show="displayType === 'diagramm'">
       <canvas ref="diagramm" :height="radiusWithPadding * 2" :width="radiusWithPadding * 2">
         Oops! Your browser doesn't support the HTML5 CANVAS tag.
       </canvas>
     </div>
 
-    <div
-      class="progress"
-      v-if="displayType === 'progress'"
-    >
+    <div class="progress" v-show="displayType === 'progress'" >
       <div class="stat-item" v-for="key in Object.keys(stats)" :key="key">
         <div class="stat-info">
           <router-link class="stat-name" :to="`/stat/${key}`">
@@ -76,14 +73,12 @@ export default {
     ProgressBar,
   },
 
-  mounted() {
-    if (this.displayType === 'diagramm') {
+  watch: {
+    stats() {
       this.drawDiagramm()
-    }
-  },
+    },
 
-  updated() {
-    if (this.displayType === 'diagramm') {
+    displayType() {
       this.drawDiagramm()
     }
   },
@@ -92,28 +87,32 @@ export default {
     degToRad: deg => deg * Math.PI / 180,
 
     drawDiagramm() {
-      const canvas = this.$refs.diagramm
-      const ctx = canvas.getContext('2d');
+      if (this.displayType === 'diagramm') {
+        const canvas = this.$refs.diagramm
+        const ctx = canvas.getContext('2d');
 
-      ctx.fillStyle = 'black'
-      ctx.strokeStyle = 'black'
-      ctx.lineWidth = 1
+        ctx.clearRect(0, 0, this.radiusWithPadding * 2, this.radiusWithPadding * 2)
 
-      this.drawCircle(ctx)
+        ctx.fillStyle = 'black'
+        ctx.strokeStyle = 'black'
+        ctx.lineWidth = 1
 
-      this.drawGrid(ctx)
+        this.drawCircle(ctx)
 
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'bottom'
-      ctx.font = Math.round(this.fontSize) + 'px Roboto, Arial'
+        this.drawGrid(ctx)
 
-      this.drawText(ctx)
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'bottom'
+        ctx.font = Math.round(this.fontSize) + 'px Roboto, Arial'
 
-      ctx.lineWidth = 2
-      ctx.strokeStyle = 'rgba(255, 165, 0, 1)'
-      ctx.fillStyle = 'rgba(255, 165, 0, 0.33)'
+        this.drawText(ctx)
 
-      this.drawStats(ctx)
+        ctx.lineWidth = 2
+        ctx.strokeStyle = 'rgba(255, 165, 0, 1)'
+        ctx.fillStyle = 'rgba(255, 165, 0, 0.33)'
+
+        this.drawStats(ctx)
+      }
     },
 
     switchType(type) {
@@ -204,11 +203,12 @@ export default {
   .stats
     display: flex
 
-    & > *:nth-child(2)
+    & > .switch ~ div
       padding: 5px
       border: 1px solid black
-      min-width: 392px
-      min-height: 392px
+
+    canvas
+      width: 100%
 
   .switch
     position: relative

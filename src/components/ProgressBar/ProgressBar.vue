@@ -12,8 +12,19 @@ export default {
     maxValue: Number
   },
   mounted() {
-    this.$refs.progress.style.width = `${ this.value / this.maxValue * 100 }%`
+    this.updateProgress()
   },
+  watch: {
+    value() {
+      this.updateProgress()
+    }
+  },
+
+  methods: {
+    updateProgress() {
+      this.$refs.progress.style.width = `${ this.value / this.maxValue * 100 }%`
+    }
+  }
 }
 </script>
 
