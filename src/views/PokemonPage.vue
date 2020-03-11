@@ -44,6 +44,13 @@
             <characteristics :characteristics="characteristics"/>
           </div>
 
+          <div class="evolution">
+            <div class="evolution-title">
+              <h2>Evolution</h2>
+            </div>
+            <evolution :species="pokemon.species" @navigate="navigate"/>
+          </div>
+
           <div class="damage-info">
             <div class="damage-info-title">
               <h2>Damage info</h2>
@@ -79,6 +86,7 @@ import PokemonMovesList from '@/components/PokemonInfo/MovesList.vue'
 import PokemonDamageTable from '@/components/PokemonInfo/DamageTable.vue'
 import PokemonStats from '@/components/PokemonInfo/Stats.vue'
 import Characteristics from '@/components/PokemonInfo/Characteristics.vue'
+import Evolution from '@/components/PokemonInfo/Evolution.vue'
 
 import SpritesContainer from '@/components/SpritesContainer/SpritesContainer.vue'
 import MainLayout from '@/hoc/MainLayout.vue'
@@ -95,6 +103,7 @@ export default {
     PokemonStats,
     PokemonDamageTable,
     MainLayout,
+    Evolution,
     PokemonType,
     PokemonMovesList,
     Characteristics,

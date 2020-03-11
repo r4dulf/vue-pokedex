@@ -4,9 +4,9 @@
       class="sprite-box"
       v-for="sprite in getSprites"
       :key="sprite"
+      v-show="sprites[sprite]"
     >
       <img
-        v-if="sprites[sprite]"
         :src="sprites[sprite]"
         :alt="sprite"
         :title="sprite.replace(/_/g, ' ')"
@@ -33,7 +33,7 @@ export default {
 <style scoped lang="sass">
   .sprites-container
     display: flex
-    justify-content: space-between
+    align-items: center
     flex-direction: row
     overflow-x: scroll
     margin: 10px 0px
