@@ -24,9 +24,7 @@
 
         <div class="first-column">
           <div class="sprites">
-            <h2 class="sprites-title">
-              Sprites
-            </h2>
+            <h2 class="sprites-title">Sprites</h2>
             <sprites-container :sprites="pokemon.sprites" class="wrap-elements"
             />
           </div>
@@ -42,9 +40,7 @@
 
           <div class="characteristics">
             <div class="characteristics-title">
-              <h2>
-                Characteristics
-              </h2>
+              <h2>Characteristics</h2>
             </div>
             <table>
               <tr v-for="key in Object.keys(getCharacteristics)" :key="key" >
@@ -81,13 +77,17 @@
 
           <div class="stats">
             <div class="stats-title">
-              <h2>
-                Stats
-              </h2>
+              <h2>Stats</h2>
             </div>
             <div class="stats-container">
               <pokemon-stats :stats="pokemonStats" :maxValue="255" :fullWidth="true" />
             </div>
+          </div>
+          <div class="moves">
+            <div class="moves-title">
+              <h2>Moves</h2>
+            </div>
+            <pokemon-moves-list :moves="pokemon.moves"/>
           </div>
         </div>
       </div>
@@ -97,8 +97,9 @@
 
 <script>
 import MainLayout from '@/hoc/MainLayout.vue'
-import PokemonType from '@/components/PokemonType/PokemonType.vue'
 import { getData } from '@/helpers/api'
+import PokemonType from '@/components/PokemonType/PokemonType.vue'
+import PokemonMovesList from '@/components/PokemonMoves/PokemonMovesList.vue'
 import PokemonStats from '@/components/PokemonStats/PokemonStats.vue'
 import SpritesContainer from '@/components/SpritesContainer/SpritesContainer.vue'
 import { faCaretSquareRight, faCaretSquareLeft, faStar } from '@fortawesome/free-regular-svg-icons'
@@ -112,6 +113,7 @@ export default {
     PokemonStats,
     MainLayout,
     PokemonType,
+    PokemonMovesList,
     SpritesContainer
   },
 
@@ -142,7 +144,11 @@ export default {
     getCharacteristics() {
       const { height, base_experience, weight } = this.pokemon
 
-      return { height, weight, base_experience }
+      return {
+        height: `${height / 10} m`,
+        weight: `${weight / 10} kg`,
+        base_experience
+      }
     }
   },
 
