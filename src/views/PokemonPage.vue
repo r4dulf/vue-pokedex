@@ -25,8 +25,7 @@
         <div class="first-column">
           <div class="sprites">
             <h2 class="sprites-title">Sprites</h2>
-            <sprites-container :sprites="pokemon.sprites" class="wrap-elements"
-            />
+            <sprites-container :sprites="pokemon.sprites" class="wrap-elements" />
           </div>
 
           <div class="types">
@@ -42,16 +41,7 @@
             <div class="characteristics-title">
               <h2>Characteristics</h2>
             </div>
-            <table>
-              <tr v-for="key in Object.keys(characteristics)" :key="key" >
-                <td>
-                  {{ key.replace(/_/g, ' ') }}
-                </td>
-                <td>
-                  {{ characteristics[key] }}
-                </td>
-              </tr>
-            </table>
+            <characteristics :characteristics="characteristics"/>
           </div>
 
           <div class="damage-info">
@@ -84,13 +74,16 @@
 </template>
 
 <script>
-import MainLayout from '@/hoc/MainLayout.vue'
-import { getData } from '@/helpers/api'
 import PokemonType from '@/components/PokemonInfo/Type.vue'
 import PokemonMovesList from '@/components/PokemonInfo/MovesList.vue'
 import PokemonDamageTable from '@/components/PokemonInfo/DamageTable.vue'
 import PokemonStats from '@/components/PokemonInfo/Stats.vue'
+import Characteristics from '@/components/PokemonInfo/Characteristics.vue'
+
 import SpritesContainer from '@/components/SpritesContainer/SpritesContainer.vue'
+import MainLayout from '@/hoc/MainLayout.vue'
+import { getData } from '@/helpers/api'
+
 import { faCaretSquareRight, faCaretSquareLeft, faStar } from '@fortawesome/free-regular-svg-icons'
 import { library } from '@fortawesome/fontawesome-svg-core'
 
@@ -104,6 +97,7 @@ export default {
     MainLayout,
     PokemonType,
     PokemonMovesList,
+    Characteristics,
     SpritesContainer
   },
 
@@ -237,24 +231,6 @@ export default {
         .types-container
           display: flex
           justify-content: flex-end
-
-      .characteristics
-        table
-          width: 100%
-          border: 1px solid black
-          border-collapse: collapse
-
-          tr
-            td
-              width: 50%
-              border: 1px solid black
-              padding: 10px
-
-              &:last-child
-                text-align: end
-
-              text-transform: uppercase
-
 
   @media screen and (max-width: 954px)
     #content
