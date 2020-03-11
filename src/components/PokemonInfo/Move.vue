@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import PokemonType from '@/components/PokemonType/PokemonType.vue'
+import PokemonType from '@/components/PokemonInfo/Type.vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
 

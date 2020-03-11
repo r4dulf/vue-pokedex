@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import PokemonMove from './PokemonMove.vue'
+import PokemonMove from '@/components/PokemonInfo/Move.vue'
 
 export default {
   name: 'PokemonMovesList',
