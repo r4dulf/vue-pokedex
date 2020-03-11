@@ -43,7 +43,7 @@
 <script>
 import PokemonType from '@/components/PokemonType/PokemonType.vue'
 import SpritesContainer from '@/components/SpritesContainer/SpritesContainer.vue'
-import PokemonStats from '@/components/PokemonStats/PokemonStats.vue'
+import PokemonStats from '@/components/PokemonInfo/PokemonStats.vue'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faInfo, faVenusMars } from '@fortawesome/free-solid-svg-icons'
 import { faStar } from '@fortawesome/free-regular-svg-icons'
