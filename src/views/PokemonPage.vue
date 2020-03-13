@@ -10,11 +10,11 @@
             <font-awesome-icon :icon="['far', 'star']" size="2x"/>
           </div>
         </div>
-        <div class="buttons-list" v-if="+id">
-          <router-link class="button" v-if="id > 1" :to="`/pokemon/${id - 1}`">
+        <div class="buttons-list">
+          <router-link class="button" v-if="prev" :to="`/pokemon/${prev.name}`">
             <font-awesome-icon :icon="['far', 'caret-square-left']" size="2x"/>
           </router-link>
-         <router-link class="button" v-if="id < 999" :to="`/pokemon/${id + 1}`">
+         <router-link class="button" v-if="next" :to="`/pokemon/${next.name}`">
             <font-awesome-icon :icon="['far', 'caret-square-right']" size="2x"/>
           </router-link>
         </div>
@@ -115,7 +115,9 @@ export default {
       pokemon: {},
       isLoaded: false,
       damageInfo: {},
-      id: +this.$route.params.id
+      id: this.$route.params.id,
+      next: {},
+      prev: {}
     }
   },
 
@@ -172,28 +174,41 @@ export default {
       this.pokemon = data
 
       this.updateDamageInfo()
+    },
+
+    async setPrevAndNextPokemonId() {
+      const nextPokemon = await getData('pokemon', '', {
+        offset: this.pokemon.id,
+        limit: 1
+      })
+
+      const prevPokemon = await getData('pokemon', '', {
+        offset: this.pokemon.id - 2,
+        limit: 1
+      })
+
+      this.next = nextPokemon.results.pop()
+      this.prev = prevPokemon.results.pop()
     }
   },
 
   async mounted() {
-    const data = await getData('pokemon', this.$route.params.id.toLowerCase())
-
-    if (data) {
-      this.pokemon = data
-      this.isLoaded = true
-      this.updateDamageInfo()
-    }
+    await this.setPokemonInfo()
+    await this.updateDamageInfo()
+    await this.setPrevAndNextPokemonId()
+    this.isLoaded = true
   },
 
   beforeRouteUpdate(to, from, next) {
-    this.id = +to.params.id
+    this.id = to.params.id
     
     next()
   },
 
   watch: {
-    id() {
-      this.setPokemonInfo()
+    async id() {
+      await this.setPokemonInfo()
+      await this.setPrevAndNextPokemonId()
     }
   }
 }
@@ -246,6 +261,7 @@ export default {
 
   @media screen and (max-width: 954px)
     #content
+      width: 100%
       .pokemon-info
         grid-template-columns: 1fr
 </style>

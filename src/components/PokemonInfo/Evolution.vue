@@ -3,7 +3,7 @@
     <div class="evo-level-container" v-for="(chain, index) in evoChain" :key='index' >
       <ul class="pokemons-list">
         <li v-for="pokemon in chain" :key="pokemon.name" class="pokemon-plate">
-          <router-link :to="`/pokemon/${pokemon.id}`" @click="$emit('navigate', pokemon.id)">
+          <router-link :to="`/pokemon/${pokemon.name}`" @click="$emit('navigate', pokemon.id)">
             <div class="sprite-container" v-if="pokemon.sprites.front_default">
               <img :src="pokemon.sprites.front_default" :alt="pokemon.name">
             </div>
