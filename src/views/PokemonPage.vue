@@ -115,7 +115,7 @@ export default {
       pokemon: {},
       isLoaded: false,
       damageInfo: {},
-      id: 0
+      id: +this.$route.params.id
     }
   },
 
@@ -164,6 +164,14 @@ export default {
       })
 
       this.damageInfo = damageInfo
+    },
+
+    async setPokemonInfo() {
+      const data = await getData('pokemon', this.id)
+
+      this.pokemon = data
+
+      this.updateDamageInfo()
     }
   },
 
@@ -173,7 +181,6 @@ export default {
     if (data) {
       this.pokemon = data
       this.isLoaded = true
-      this.id = this.pokemon.id
       this.updateDamageInfo()
     }
   },
@@ -185,13 +192,8 @@ export default {
   },
 
   watch: {
-    async id() {
-      const data = await getData('pokemon', this.id)
-
-      if (data) {
-        this.pokemon = data
-        this.updateDamageInfo()
-      }
+    id() {
+      this.setPokemonInfo()
     }
   }
 }

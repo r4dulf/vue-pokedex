@@ -30,7 +30,11 @@ library.add(faAngleDown)
 export default {
   name: 'PokemonEvolution',
   props: {
-    species: Object
+    species: {
+      required: true,
+      type: Object,
+      default: () => ({})
+    }
   },
 
   data: () => ({
@@ -73,13 +77,20 @@ export default {
       })
 
       return result
+    },
+
+    async updatePokemonInfo() {
+      this.evoChain = await this.getPokemonsInfo()
     }
+  },
+
+  async mounted() {
+    this.updatePokemonInfo()
   },
 
   watch: {
     async species() {
-      this.evoChain = []
-      this.evoChain = await this.getPokemonsInfo()
+      this.updatePokemonInfo()
     }
   }
 }
