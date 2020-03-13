@@ -35,6 +35,7 @@
 
 <script>
 import MainLayout from '@/hoc/MainLayout.vue'
+import qs from 'query-string'
 import PokemonCardList from '@/components/PokemonCardList/PokemonCardList.vue'
 import Pagination from '@/components/Pagination/Pagination.vue'
 import { getData } from '@/helpers/api'
@@ -48,10 +49,12 @@ export default {
   },
   
   data: function() {
+    const query = qs.parse(window.location.search)
+
     return ({
       pokemons: {},
-      cardsOnPage: 5,
-      currentPage: 1,
+      cardsOnPage: +query.limit || 5,
+      currentPage: +query.page || 1,
       paginationButtonsCount: 5
     })
   },
@@ -77,9 +80,10 @@ export default {
   },
 
   methods: {
-    navigate(pageNum) {
-      this.currentPage = pageNum
-      this.updateData()
+    navigate(page, limit = this.cardsOnPage) {
+      this.$router.push('?' + qs.stringify({ page: page, limit: limit })).catch(() => {})
+
+      window.scrollTo(0, 0)
     },
 
     async updateData() {
@@ -88,38 +92,51 @@ export default {
         limit: this.cardsOnPage
       })
 
-      if (data) {
-        this.pokemons = data
-      }
+      this.pokemons = data
     },
+  },
+
+  async beforeRouteUpdate(to, from, next) {
+    this.currentPage = +to.query.page || 1
+    this.cardsOnPage = +to.query.limit || 5
+
+    await this.updateData()
+
+    next()
   },
 
   mounted() {
     this.updateData()
   },
+
+  watch: {
+    cardsOnPage(limit) {
+      this.navigate(1, limit)
+    }
+  }
 }
 </script>
 
 <style scoped lang="sass">
-div#pokemons-cards
-  padding: 10px 0px
+  div#pokemons-cards
+    padding: 10px 0px
 
-  .features
-    padding: 5px 10px
-    
-    .cards-on-page
-      display: flex
-      justify-content: flex-end
+    .features
+      padding: 5px 10px
+      
+      .cards-on-page
+        display: flex
+        justify-content: flex-end
 
-      .label
-        margin-right: 10px
+        .label
+          margin-right: 10px
 
-      select
-        width: 50px
-        height: 20px
-        background-color: white
+        select
+          width: 50px
+          height: 20px
+          background-color: white
 
-.pagination-container
-  display: flex
-  justify-content: center
+  .pagination-container
+    display: flex
+    justify-content: center
 </style>
