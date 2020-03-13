@@ -11,12 +11,12 @@
           </div>
         </div>
         <div class="buttons-list" v-if="+id">
-          <span class="button" v-if="pokemon.id > 1" @click="navigate" :data-to="id - 1">
+          <router-link class="button" v-if="id > 1" :to="`/pokemon/${id - 1}`">
             <font-awesome-icon :icon="['far', 'caret-square-left']" size="2x"/>
-          </span>
-          <span class="button" @click="navigate" :data-to="id + 1">
+          </router-link>
+         <router-link class="button" v-if="id < 999" :to="`/pokemon/${id + 1}`">
             <font-awesome-icon :icon="['far', 'caret-square-right']" size="2x"/>
-          </span>
+          </router-link>
         </div>
       </div>
 
@@ -48,7 +48,7 @@
             <div class="evolution-title">
               <h2>Evolution</h2>
             </div>
-            <evolution :species="pokemon.species" @navigate="navigate"/>
+            <evolution :species="pokemon.species"/>
           </div>
 
           <div class="damage-info">
@@ -146,11 +146,6 @@ export default {
   },
 
   methods: {
-    navigate(e) {
-      this.$router.push(`/pokemon/${e.currentTarget.dataset.to}`)
-      this.id = +e.currentTarget.dataset.to
-    },
-
     async updateDamageInfo() {
       const { types } = this.pokemon
       const values = await Promise.all(types.map(
@@ -183,9 +178,15 @@ export default {
     }
   },
 
+  beforeRouteUpdate(to, from, next) {
+    this.id = +to.params.id
+    
+    next()
+  },
+
   watch: {
     async id() {
-      const data = await getData('pokemon', this.$route.params.id.toLowerCase())
+      const data = await getData('pokemon', this.id)
 
       if (data) {
         this.pokemon = data

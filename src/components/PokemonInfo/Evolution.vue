@@ -73,19 +73,12 @@ export default {
       })
 
       return result
-    },
-
-    async mounted() {
-      this.evoChain = await this.getPokemonsInfo()
-    },
-
-    async updated() {
-      this.evoChain = await this.getPokemonsInfo()
-    },
+    }
   },
 
   watch: {
     async species() {
+      this.evoChain = []
       this.evoChain = await this.getPokemonsInfo()
     }
   }

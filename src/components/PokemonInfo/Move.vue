@@ -10,7 +10,9 @@
       </span>
     </div>
     <div class="effect-info" v-show="expanded">
-      {{ getEffectDescription(move) }}
+      <p>
+        {{ getEffectDescription(move) }}
+      </p>
     </div>
   </div>
 </template>
